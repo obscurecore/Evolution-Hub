@@ -22,6 +22,7 @@ public class RemoteCardsHubService implements CardsService {
         return cardClients.stream()
                 .parallel()
                 .flatMap(client -> getCards(userData, client).stream())
+                //get blocked there cause worker only one
                 .collect(Collectors.toList());
     }
 
