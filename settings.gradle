@@ -1,0 +1,7 @@
+rootProject.name = 'evolution-hub'
+include 'hub'
+include 'fines-cards'
+include 'commons'
+include 'advice-cards'
+include 'regular-cards'
+
