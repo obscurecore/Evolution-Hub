@@ -9,6 +9,8 @@ import com.ruslan.card.advice.service.AdviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,8 +21,8 @@ public class AdviceController {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AdviceCard> loadAdvices(@RequestHeader("userId") String userId,
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<AdviceCard> loadAdvices(@RequestHeader("userId") String userId,
                                         @RequestHeader("longitude") BigDecimal longitude,
                                         @RequestHeader("latitude") BigDecimal latitude,
                                         @RequestParam("currentDate") Long currentDate) {

@@ -2,9 +2,8 @@ package com.ruslan.card.fines.service;
 
 import com.ruslan.card.fines.entity.FineCard;
 import com.ruslan.entity.UserData;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface FinesService {
-    List<FineCard> loadFines(UserData userData);
+    Flux<FineCard> loadFines(UserData userData);
 }

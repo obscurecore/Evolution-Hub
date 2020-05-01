@@ -4,6 +4,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -16,13 +18,13 @@ public class BaseCardClient extends BaseClient {
         super(baseUrl);
     }
 
-    protected <T> ResponseEntity<List<T>> getCards(String userId,
-                                                   BigDecimal longitude,
-                                                   BigDecimal latitude,
-                                                   Long currentDate,
-                                                   MediaType accept) {
-        return this.getClient("/?currentDate={currentDate}", createQuery(currentDate),
-                createHeaders(userId, longitude, latitude), accept);
+    protected <T> Mono<ClientResponse> getCards(String userId,
+                                                BigDecimal longitude,
+                                                BigDecimal latitude,
+                                                Long currentDate,
+                                                MediaType accept) {
+        return this.getClient("/", createQuery(currentDate),
+                createHeaders(userId, longitude, latitude).toSingleValueMap(), accept);
     }
 
     private static MultiValueMap<String, String> createHeaders(String userId, BigDecimal longitude, BigDecimal latitude) {

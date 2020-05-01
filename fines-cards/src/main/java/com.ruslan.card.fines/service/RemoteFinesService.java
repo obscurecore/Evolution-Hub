@@ -8,10 +8,9 @@ import com.ruslan.entity.UserData;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +20,9 @@ public class RemoteFinesService implements FinesService {
     private final AIClient AIClient;
 
     @Override
-    public List<FineCard> loadFines(UserData userData) {
-        return AIClient.getFines(userData.getUserId()).stream()
+    public Flux<FineCard> loadFines(UserData userData) {
+        return AIClient.getFines(userData.getUserId())
+                .flatMapIterable(res-> res)
                 .map(fine ->
                         FineCard.builder()
                                 .userId(userData.getUserId())
@@ -33,6 +33,6 @@ public class RemoteFinesService implements FinesService {
                                 .executionUrl(properties.getExecuteUrl())
                                 .type(CardType.FINES)
                                 .build()
-                ).collect(Collectors.toList());
+                );
     }
 }
