@@ -3,10 +3,9 @@ package com.ruslan.card.regular.service;
 
 import com.ruslan.card.regular.entity.RegularCard;
 import com.ruslan.entity.UserData;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 
 public interface RegularService {
-    List<RegularCard> loadRegular(UserData userData);
+    Flux<RegularCard> loadRegular(UserData userData);
 }

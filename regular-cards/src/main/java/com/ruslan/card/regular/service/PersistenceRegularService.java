@@ -8,10 +8,9 @@ import com.ruslan.entity.UserData;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +20,10 @@ public class PersistenceRegularService implements RegularService {
     private static final long DAY = 86_400_000;
 
     @Override
-    public List<RegularCard> loadRegular(UserData userData) {
+    public Flux<RegularCard> loadRegular(UserData userData) {
         Date from = new Date(userData.getCurrentDate() - DAY);
         Date to = new Date(userData.getCurrentDate() + DAY);
-        return regularRepository.findByUserIdAndDueDateBetween(userData.getUserId(), from, to).stream()
+        return regularRepository.findByUserIdAndDueDateBetween(userData.getUserId(), from, to)
                 .map(doc ->
                         RegularCard.builder()
                                 .userId(userData.getUserId())
@@ -35,6 +34,6 @@ public class PersistenceRegularService implements RegularService {
                                 .executionUrl(properties.getExecuteUrl())
                                 .type(CardType.REGULAR)
                                 .build()
-                ).collect(Collectors.toList());
+                );
     }
 }
